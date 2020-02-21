@@ -83,9 +83,13 @@ export default {
         }
 
         if (this.user.username && this.user.password) {
-          this.$store.dispatch('auth/login', this.user).then(
+          var user = {
+              "user_name" : this.user.username,
+              "user_pass":  this.user.password
+          }
+          this.$store.dispatch('auth/login', user).then(
             () => {
-              this.$router.push('/profile');
+              this.$router.push('/home');
             },
             error => {
               this.loading = false;
