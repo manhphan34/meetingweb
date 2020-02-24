@@ -22,7 +22,6 @@
 import store from "../store"
 import MeetingService from "../services/meeting.service";
 export default {
-  el: "room",
   name: "Home",
   store,
   data() {

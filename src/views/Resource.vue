@@ -52,6 +52,7 @@ export default {
       for (var i = 0; i <= files.length; i++) {
         var formData = new FormData();
         formData.append("file", files[i]);
+        console.log(files[i].name)
         meetingService.createResource(localStorage.getItem("id"), files[i].name, formData).then(
           response => {
             if (response == 1) {

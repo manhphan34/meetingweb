@@ -11,7 +11,7 @@
 
       <div v-if="currentUser" class="navbar-nav ml-auto">
         <li class="nav-item">
-          <router-link to="/profile" class="nav-link">
+          <router-link to="/home" class="nav-link">
             <font-awesome-icon icon="user" />
             {{ currentUser.user_name }}
           </router-link>

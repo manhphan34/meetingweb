@@ -2,22 +2,28 @@ import axios from "axios";
 const API_URL = "http://192.168.16.12:8081/api/users/";
 var auth = require("../models/auth");
 auth = localStorage.getItem("auth");
-axios.defaults.headers.common = {
-  Authorization: `Bearer ${JSON.parse(auth).token}`
-};
+if (auth) {
+  axios.defaults.headers.common = {
+    Authorization: `Bearer ${JSON.parse(auth).token}`
+  };
+}
+
+var headers = new Headers();
+headers.append("Content-Type", "application/json");
+headers.append("Accept", "application/json");
+headers.append("Origin", "http://192.168.16.12:8081/api/users");
+
 const instance = axios.create({
   baseURL: API_URL,
   timeout: 3000,
-  headers: {
-    "Content-Type": "application/json",
-    Accept: "application/json",
-    "Access-Control-Allow-Origin": "*"
-  }
+  headers: headers
 });
 
 class MeetingService {
   async getAllMeetingRoom() {
     const response = await instance({
+      mode: "cors",
+      credentials: "include",
       method: "get", //you can set what request you want to be
       url: "rooms",
       params: {

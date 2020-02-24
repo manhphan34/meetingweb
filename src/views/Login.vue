@@ -52,15 +52,15 @@
 </template>
 
 <script>
-import User from '../models/user';
+import User from "../models/user";
 
 export default {
-  name: 'Login',
+  name: "Login",
   data() {
     return {
-      user: new User('', ''),
+      user: new User("", ""),
       loading: false,
-      message: ''
+      message: ""
     };
   },
   computed: {
@@ -70,7 +70,7 @@ export default {
   },
   created() {
     if (this.loggedIn) {
-      this.$router.push('/profile');
+      this.$router.push("/home");
     }
   },
   methods: {
@@ -84,17 +84,22 @@ export default {
 
         if (this.user.username && this.user.password) {
           var user = {
-              "user_name" : this.user.username,
-              "user_pass":  this.user.password
-          }
-          this.$store.dispatch('auth/login', user).then(
-            () => {
-              this.$router.push('/home');
+            user_name: this.user.username,
+            user_pass: this.user.password
+          };
+
+          this.$store.dispatch("auth/login", user).then(
+            response => {
+              if (response && response.token) this.$router.push("/home");
+              else {
+                this.loading = false;
+                this.message = "Đăng nhập thất bại.  Vui lòng thử lại sau !"
+                return
+              }
             },
             error => {
               this.loading = false;
               this.message =
-                (error.response && error.response.data) ||
                 error.message ||
                 error.toString();
             }

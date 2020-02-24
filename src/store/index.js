@@ -9,5 +9,7 @@ export default new Vuex.Store({
   modules: {
     auth
   },
-  state: {}
+  state: {
+    id: -1
+  }
 });
