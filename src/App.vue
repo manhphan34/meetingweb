@@ -12,13 +12,23 @@
       <div v-if="currentUser" class="navbar-nav ml-auto">
         <li class="nav-item">
           <router-link to="/home" class="nav-link">
+            <font-awesome-icon icon="home" /> Home
+          </router-link>
+        </li>
+        <li class="nav-item">
+          <router-link to="/document" class="nav-link">
+            <font-awesome-icon icon="user" /> Upload File
+          </router-link>
+        </li>
+        <li class="nav-item">
+          <router-link to="/home" class="nav-link">
             <font-awesome-icon icon="user" />
             {{ currentUser.user_name }}
           </router-link>
         </li>
         <li class="nav-item">
           <a class="nav-link" href @click.prevent="logOut">
-            <font-awesome-icon icon="sign-out-alt" />LogOut
+            <font-awesome-icon icon="sign-out-alt" /> LogOut
           </a>
         </li>
       </div>
@@ -32,6 +42,7 @@
 
 <script>
 export default {
+  props: ["folderId"],
   computed: {
     currentUser() {
       return this.$store.state.auth.user;

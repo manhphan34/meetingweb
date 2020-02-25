@@ -13,7 +13,12 @@
           <tr>
             <td>{{item.name}}</td>
             <td>
-              <button class="btn btn-danger" v-on:click="deleteResource(item)">Xóa</button>
+              <button
+                id="btn-delete"
+                class="btn btn-danger"
+                v-on:click="deleteResource(item)"
+                v-show="isEdit==1"
+              >Xóa</button>
             </td>
           </tr>
         </tbody>
@@ -23,20 +28,27 @@
 </template>
 
 <script>
+import Vue from "vue"
+import VueSimpleAlert from "vue-simple-alert";
 import MeetingService from "../services/meeting.service";
 import meetingService from "../services/meeting.service";
+Vue.use(VueSimpleAlert)
 
 export default {
-  el: "resource",
   name: "Resource",
   data() {
     return {
-      items: {}
+      items: {},
+      isEdit : localStorage.getItem("isEdit")
     };
   },
   mounted() {
-    var id = localStorage.getItem("id")
-    console.log(id);
+    var id = localStorage.getItem("id");
+    var isEdit = localStorage.getItem("isEdit");
+    if (isEdit == 0) {
+      var elementAdd = document.getElementById("btn-add");
+      elementAdd.style.display = "none";
+    }
     MeetingService.getAllResource(id).then(
       response => {
         this.items = response;
@@ -52,27 +64,33 @@ export default {
       for (var i = 0; i <= files.length; i++) {
         var formData = new FormData();
         formData.append("file", files[i]);
-        console.log(files[i].name)
-        meetingService.createResource(localStorage.getItem("id"), files[i].name, formData).then(
-          response => {
-            if (response == 1) {
-              MeetingService.getAllResource(localStorage.getItem("id")).then(
-                response => {
-                  this.items = response;
-                },
-                error => {
-                  console.log(error);
-                }
-              );
+        console.log(files[i].name);
+        meetingService
+          .createResource(localStorage.getItem("id"), files[i].name, formData)
+          .then(
+            response => {
+              if (response == 1) {
+                MeetingService.getAllResource(localStorage.getItem("id")).then(
+                  response => {
+                    this.items = response;
+                  },
+                  error => {
+                    console.log(error);
+                  }
+                );
+              }
+            },
+            error => {
+              console.log(error);
             }
-          },
-          error => {
-            console.log(error);
-          }
-        );
+          );
       }
     },
     deleteResource(resource) {
+      if (localStorage.getItem("isEdit") == 0) {
+        this.$alert("Bạn không có quyền xóa tài liệu của cuộc họp này.")
+        return;
+      }
       MeetingService.deleteResource(localStorage.getItem("id"), resource).then(
         response => {
           if (response == 1) {

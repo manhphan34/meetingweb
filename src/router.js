@@ -3,6 +3,7 @@ import Router from "vue-router";
 import Home from "./views/Home.vue";
 import Login from "./views/Login.vue";
 import Resource from "./views/Resource.vue";
+import Document from "./views/Document.vue";
 import VueRouter from "vue-router";
 
 Vue.use(Router);
@@ -28,6 +29,14 @@ export const router = new VueRouter({
       component: Resource,
       name: "resource",
       props: true
+    },
+    {
+      path: "/document",
+      component: Document,
+      name: "document",
+      props: {
+        folderId: Number
+      }
     }
   ]
 });

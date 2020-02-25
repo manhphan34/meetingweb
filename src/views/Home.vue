@@ -9,7 +9,7 @@
         </tr>
       </thead>
       <tbody v-for="item in items" v-bind:key="item.id">
-        <tr class="clickable-row" v-on:click="navigate(item.id)">
+        <tr class="clickable-row" v-on:click="navigate(item)">
           <td>{{item.name}}</td>
           <td>{{item.creator}}</td>
         </tr>
@@ -43,9 +43,10 @@ export default {
     );
   },
   methods: {
-    navigate: function(id) {
-      localStorage.setItem("id", id)
-      this.$router.push({ name: "resource", params: { roomId: id } });
+    navigate: function(room) {
+      localStorage.setItem("id", room.id)
+      localStorage.setItem("isEdit", room.is_edit)
+      this.$router.push({ name: "resource", params: { roomId: room.id } });
     }
   }
 };
